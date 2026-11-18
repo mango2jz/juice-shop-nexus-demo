@@ -1,0 +1,432 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1795004438044,
+  "projectRoot": "/Users/duynd/WebstormProjects/juice-shop-nexus-demo",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": "22 - 26",
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "express",
+        "version": "4.22.1",
+        "category": "backend"
+      },
+      {
+        "name": "cypress",
+        "version": "16.2.0",
+        "category": "testing"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": "Node.js 22-26"
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": "npm test",
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run start",
+    "scripts": {
+      "build": "npm run build:frontend && npm run build:server",
+      "build:frontend": "cd frontend && npm run build",
+      "build:server": "tsc",
+      "cypress:open": "cypress open",
+      "cypress:run": "cypress run",
+      "postinstall": "cd frontend && npm install && cd .. && npm run build:frontend && (npm run --silent build:server || cd .)",
+      "lint": "eslint *.ts data lib models routes test/**/*.ts views && npm run lint:config && cd frontend && npm run lint && npm run lint:scss && cd ..",
+      "lint:config": "tsx lib/scripts/lintConfig.ts",
+      "lint:fix": "eslint *.ts data lib models routes test/**/*.ts views rsn --fix && cd frontend && npm run lint:fix && cd ..",
+      "package": "node scripts/package.mjs",
+      "package:ci": "npm prune --production && npm dedupe && cd frontend && npm prune --production && cd .. && npm run --silent sbom && node scripts/package.mjs",
+      "serve": "concurrently --kill-others \"tsx app.ts\" \"cd frontend && npm run start\"",
+      "serve:dev": "concurrently --kill-others \"tsx watch app.ts\" \"cd frontend && npm run start\"",
+      "start": "node build/app",
+      "test": "npm run test:frontend && npm run test:server && npm run test:api",
+      "test:coverage": "npm run test:frontend:coverage && npm run test:server:coverage && npm run test:api:coverage",
+      "test:frontend": "cd frontend && npm run test",
+      "test:frontend:coverage": "cd frontend && npm run test:coverage",
+      "test:server": "node --import ./test/server/helpers/test-env.mjs --import tsx --test --test-force-exit \"test/server/**/*.unit.test.ts\"",
+      "test:server:coverage": "nyc --report-dir=./coverage/server-tests npm run test:server",
+      "test:api": "node --import ./test/api/helpers/test-env.mjs --import tsx --test --test-force-exit \"test/api/**/*.test.ts\"",
+      "test:api:coverage": "nyc --report-dir=./coverage/api-tests npm run test:api",
+      "test:e2e": "npm run cypress:run",
+      "rsn": "node --import tsx rsn/rsn.ts",
+      "rsn:update": "node --import tsx rsn/rsn-update.ts",
+      "vagrant": "cd vagrant && vagrant up",
+      "sbom": "cyclonedx-npm --omit=dev --output-format=JSON --output-file=bom.json"
+    }
+  },
+  "conventions": {
+    "namingStyle": "camelCase/PascalCase",
+    "importStyle": "ES modules",
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "lib",
+      "scripts",
+      "test"
+    ],
+    "gitBranches": {
+      "defaultBranch": "master",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "build": {
+      "path": "build",
+      "purpose": "Build output",
+      "fileCount": 7,
+      "lastAccessed": 1795004438023,
+      "keyFiles": [
+        "app.js",
+        "app.js.map",
+        "cypress.config.js",
+        "cypress.config.js.map",
+        "package.json"
+      ]
+    },
+    "config": {
+      "path": "config",
+      "purpose": "Configuration files",
+      "fileCount": 14,
+      "lastAccessed": 1795004438031,
+      "keyFiles": [
+        "7ms.yml",
+        "addo.yml",
+        "bodgeit.yml",
+        "ctf.yml",
+        "default.yml"
+      ]
+    },
+    "data": {
+      "path": "data",
+      "purpose": "Data files",
+      "fileCount": 6,
+      "lastAccessed": 1795004438032,
+      "keyFiles": [
+        "datacache.ts",
+        "datacreator.ts",
+        "juiceshop.sqlite",
+        "mongodb.ts",
+        "staticData.ts"
+      ]
+    },
+    "encryptionkeys": {
+      "path": "encryptionkeys",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1795004438032,
+      "keyFiles": [
+        "jwt.pub",
+        "premium.key"
+      ]
+    },
+    "frontend": {
+      "path": "frontend",
+      "purpose": null,
+      "fileCount": 13,
+      "lastAccessed": 1795004438032,
+      "keyFiles": [
+        "angular.json",
+        "eslint.config.mjs",
+        "filter-bundle-stats-for-diagram.mts",
+        "package.json",
+        "proxy.conf.json"
+      ]
+    },
+    "ftp": {
+      "path": "ftp",
+      "purpose": null,
+      "fileCount": 10,
+      "lastAccessed": 1795004438032,
+      "keyFiles": [
+        "acquisitions.md",
+        "announcement_encrypted.md",
+        "coupons_2013.md.bak",
+        "eastere.gg",
+        "encrypt.pyc"
+      ]
+    },
+    "i18n": {
+      "path": "i18n",
+      "purpose": null,
+      "fileCount": 45,
+      "lastAccessed": 1795004438032,
+      "keyFiles": [
+        "ar_SA.json",
+        "az_AZ.json",
+        "bg_BG.json",
+        "bn_BD.json",
+        "ca_ES.json"
+      ]
+    },
+    "infrastructure": {
+      "path": "infrastructure",
+      "purpose": null,
+      "fileCount": 3,
+      "lastAccessed": 1795004438032,
+      "keyFiles": [
+        "Dockerfile",
+        "README.md",
+        "docker-compose.yml"
+      ]
+    },
+    "lib": {
+      "path": "lib",
+      "purpose": "Library code",
+      "fileCount": 17,
+      "lastAccessed": 1795004438033,
+      "keyFiles": [
+        "accuracy.ts",
+        "antiCheat.ts",
+        "challengeUtils.ts",
+        "codingChallenges.ts",
+        "colors.ts"
+      ]
+    },
+    "logs": {
+      "path": "logs",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1795004438034,
+      "keyFiles": [
+        "access.log.2026-11-18",
+        "audit.json"
+      ]
+    },
+    "models": {
+      "path": "models",
+      "purpose": "Data models",
+      "fileCount": 24,
+      "lastAccessed": 1795004438034,
+      "keyFiles": [
+        "address.ts",
+        "basket.ts",
+        "basketitem.ts",
+        "captcha.ts",
+        "card.ts"
+      ]
+    },
+    "monitoring": {
+      "path": "monitoring",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1795004438034,
+      "keyFiles": [
+        "grafana-dashboard.json"
+      ]
+    },
+    "nexusflag-demo": {
+      "path": "nexusflag-demo",
+      "purpose": null,
+      "fileCount": 8,
+      "lastAccessed": 1795004438034,
+      "keyFiles": [
+        "README.md",
+        "common.mjs",
+        "console-snippet.js",
+        "flag.mjs",
+        "provision.mjs"
+      ]
+    },
+    "routes": {
+      "path": "routes",
+      "purpose": "Route handlers",
+      "fileCount": 63,
+      "lastAccessed": 1795004438035,
+      "keyFiles": [
+        "2fa.ts",
+        "address.ts",
+        "angular.ts",
+        "appConfiguration.ts",
+        "appVersion.ts"
+      ]
+    },
+    "rsn": {
+      "path": "rsn",
+      "purpose": null,
+      "fileCount": 5,
+      "lastAccessed": 1795004438035,
+      "keyFiles": [
+        "cache.json",
+        "rsn-update.ts",
+        "rsn.ts",
+        "rsnOutput.ts",
+        "rsnUtil.ts"
+      ]
+    },
+    "screenshots": {
+      "path": "screenshots",
+      "purpose": null,
+      "fileCount": 17,
+      "lastAccessed": 1795004438035,
+      "keyFiles": [
+        "bundle-analysis.png",
+        "git-stats.png",
+        "screenshot00.png",
+        "screenshot01.png",
+        "screenshot02.png"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 1,
+      "lastAccessed": 1795004438035,
+      "keyFiles": [
+        "package.mjs"
+      ]
+    },
+    "terraform": {
+      "path": "terraform",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1795004438035,
+      "keyFiles": [
+        "main.tf",
+        "networking.tf",
+        "outputs.tf",
+        "variables.tf"
+      ]
+    },
+    "test": {
+      "path": "test",
+      "purpose": "Test files",
+      "fileCount": 0,
+      "lastAccessed": 1795004438035,
+      "keyFiles": []
+    },
+    "uploads": {
+      "path": "uploads",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1795004438035,
+      "keyFiles": []
+    },
+    "vagrant": {
+      "path": "vagrant",
+      "purpose": null,
+      "fileCount": 3,
+      "lastAccessed": 1795004438035,
+      "keyFiles": [
+        "Vagrantfile",
+        "bootstrap.sh",
+        "default.conf"
+      ]
+    },
+    "views": {
+      "path": "views",
+      "purpose": "View templates",
+      "fileCount": 4,
+      "lastAccessed": 1795004438035,
+      "keyFiles": [
+        "dataErasureForm.hbs",
+        "dataErasureResult.hbs",
+        "promotionVideo.pug",
+        "userProfile.pug"
+      ]
+    },
+    "build/data": {
+      "path": "build/data",
+      "purpose": "Data files",
+      "fileCount": 10,
+      "lastAccessed": 1795004438036,
+      "keyFiles": [
+        "datacache.js",
+        "datacache.js.map",
+        "datacreator.js"
+      ]
+    },
+    "build/lib": {
+      "path": "build/lib",
+      "purpose": "Library code",
+      "fileCount": 34,
+      "lastAccessed": 1795004438036,
+      "keyFiles": [
+        "accuracy.js",
+        "accuracy.js.map",
+        "antiCheat.js"
+      ]
+    },
+    "build/models": {
+      "path": "build/models",
+      "purpose": "Data models",
+      "fileCount": 48,
+      "lastAccessed": 1795004438036,
+      "keyFiles": [
+        "address.js",
+        "address.js.map",
+        "basket.js"
+      ]
+    },
+    "build/routes": {
+      "path": "build/routes",
+      "purpose": "Route handlers",
+      "fileCount": 127,
+      "lastAccessed": 1795004438037,
+      "keyFiles": [
+        "2fa.js",
+        "2fa.js.map",
+        "address.js"
+      ]
+    },
+    "data/static": {
+      "path": "data/static",
+      "purpose": "Static files",
+      "fileCount": 9,
+      "lastAccessed": 1795004438038,
+      "keyFiles": [
+        "challenges.yml",
+        "contractABIs.ts",
+        "deliveries.yml"
+      ]
+    },
+    "frontend/dist": {
+      "path": "frontend/dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 0,
+      "lastAccessed": 1795004438038,
+      "keyFiles": []
+    },
+    "frontend/node_modules": {
+      "path": "frontend/node_modules",
+      "purpose": "Dependencies",
+      "fileCount": 1,
+      "lastAccessed": 1795004438039,
+      "keyFiles": []
+    },
+    "test/api": {
+      "path": "test/api",
+      "purpose": "API routes",
+      "fileCount": 56,
+      "lastAccessed": 1795004438041,
+      "keyFiles": [
+        "2fa.test.ts",
+        "address.test.ts",
+        "administration.test.ts"
+      ]
+    }
+  },
+  "hotPaths": [],
+  "userDirectives": []
+}

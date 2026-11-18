@@ -71,6 +71,7 @@ import * as address from './routes/address'
 import * as metrics from './routes/metrics'
 import * as payment from './routes/payment'
 import { placeOrder } from './routes/order'
+import { initNexusFlag, closeNexusFlag } from './lib/nexusflag' // NexusFlag demo: SDK lifecycle
 import { b2bOrder } from './routes/b2bOrder'
 import * as delivery from './routes/delivery'
 import * as recycles from './routes/recycles'
@@ -777,12 +778,15 @@ export async function start (readyCallback?: () => void) {
   await preconditionsReady
   await datacreator()
   datacreatorEnd()
+  await initNexusFlag() // NexusFlag demo: init SDK after seed data, before listening
   const port = process.env.PORT ?? config.get('server.port')
   process.env.BASE_PATH = process.env.BASE_PATH ?? config.get('server.basePath')
 
   metricsUpdateLoop = Metrics.updateLoop() // vuln-code-snippet neutral-line exposedMetricsChallenge
 
-  server.listen(port, () => {
+  // NexusFlag demo: bind loopback by default (deliberately vulnerable app); override with HOST
+  const host = process.env.HOST ?? '127.0.0.1'
+  server.listen(Number(port), host, () => {
     logger.info(colors.cyan(`Server listening on port ${colors.bold(`${port}`)}`))
     startupGauge.set({ task: 'ready' }, (Date.now() - startTime) / 1000)
     if (process.env.BASE_PATH !== '') {
@@ -803,6 +807,7 @@ export async function start (readyCallback?: () => void) {
 }
 
 export function close (exitCode: number | undefined) {
+  void closeNexusFlag() // NexusFlag demo: release the SDK client
   if (server) {
     clearInterval(metricsUpdateLoop)
     server.close()

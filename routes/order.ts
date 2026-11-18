@@ -19,6 +19,7 @@ import { WalletModel } from '../models/wallet'
 import * as security from '../lib/insecurity'
 import * as utils from '../lib/utils'
 import * as db from '../data/mongodb'
+import { isFeatureOn } from '../lib/nexusflag' // NexusFlag demo
 
 interface Product {
   quantity: number
@@ -129,7 +130,20 @@ export function placeOrder () {
               deliveryMethod.eta = deliveryMethodFromModel.eta
             }
           }
-          const deliveryAmount = security.isDeluxe(req) ? deliveryMethod.deluxePrice : deliveryMethod.price
+
+          // ===== NexusFlag demo: feature flag "new-delivery-pricing" =====
+          let deliveryAmount: number
+          if (isFeatureOn('new-delivery-pricing', req, res)) {
+            // NEW pricing: delivery is free for orders of 50¤ or more
+            const chosenDelivery = await DeliveryModel.findOne({ where: { id: req.body.orderDetails?.deliveryMethodId } })
+            const deliveryFee = chosenDelivery!.price // planted bug: forgets that the chosen delivery option may not exist
+            deliveryAmount = totalPrice >= 50 ? 0 : deliveryFee
+          } else {
+            // CURRENT pricing: the customer pays the price of the chosen delivery option
+            deliveryAmount = security.isDeluxe(req) ? deliveryMethod.deluxePrice : deliveryMethod.price
+          }
+          // ===============================================================
+
           totalPrice += deliveryAmount
           doc.text(`${req.__('Delivery Price')}: ${deliveryAmount.toFixed(2)}¤`)
           doc.moveDown()
