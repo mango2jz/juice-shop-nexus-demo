@@ -124,9 +124,20 @@ node flag.mjs on                      # release the new delivery pricing
 node traffic.mjs --bad-ratio 0.10     # ~10% of new-pricing checkouts now fail, above the 5% trigger
 ```
 Within about 35 s of the first 5xx (30 s window + 5 s hop) the traffic line prints `##### CONTAINED ... #####`
-and the version split flips back to v1. The dashboard shows the incident.
+and the version split flips back to v1. The NexusFlag web dashboard (http://localhost:3000) shows the incident.
 
 Alternative: start `traffic.mjs --bad-ratio 0 --duration 0`, then type `0.3` + Enter to "ship the bug" live.
+
+**Live dashboard (recommended for presenting):** run the same load as a full-screen table instead of scrolling lines:
+```bash
+node dashboard.mjs --duration 0          # same options as traffic.mjs
+```
+It shows totals, the 30 s error rate against the 5% trigger, the v1/v2 split, sparklines, one row per second with the
+same numbers as the `traffic.mjs` status line, and an events pane (CONTAINED, bad-ratio changes).
+Keys: `q` quit (Ctrl+C twice forces), `↑`/`↓` bad ratio ±0.05, `0`-`9` bad ratio 0.0-0.9, `b` bad ratio 0, `p` pause,
+`c` clear events. Needs at least 60x16. `--ascii` for consoles without box-drawing glyphs (old Windows `cmd.exe`
+fonts), `--no-color` or `NO_COLOR=1` for monochrome, `--plain` (or piping the output) prints the classic lines.
+Runs on macOS and Windows (Windows Terminal / PowerShell 7 recommended).
 
 **Recover** (human action, audited, UC-31):
 ```bash
@@ -166,9 +177,12 @@ Windows: `Get-NetTCPConnection -LocalPort 3100 -State Listen | % { Stop-Process 
 | `provision.mjs` | Create workspace/project/env/flag/policy, issue API key, write `.env.demo` | `--core`, `--origin`, `--stream`, `--email`, `--password`, `--workspace`, `--min-samples` (30), `--cooldown` (60), `--fresh`, `--dry-run` |
 | `start-shop.mjs` | Run `node build/app` on 3100 with the `NEXUSFLAG_*` keys from `.env.demo` | `--port`, `--sdk`, `--dry-run` |
 | `traffic.mjs` | Checkout load; reports version split and containment time | `--shop`, `--users` (20), `--rps` (5), `--bad-ratio` (0.10), `--duration` (120, 0 = forever), `--seed` |
+| `dashboard.mjs` | Full-screen live view of the same checkout load (htop-style table, keys to change bad ratio) | traffic.mjs options plus `--plain`, `--ascii`, `--no-color` |
 | `flag.mjs` | `on`, `off`, `status`, `reenable` | `--core`, `--origin`, `--dry-run` |
 
 Every script prints its full help with `--help`.
+
+Self-tests for the dashboard and load engine (no network, uses a stub shop): `node --test nexusflag-demo/test/` from the shop root.
 
 ## Measured (real run, embedded mode, defaults, `--bad-ratio 0.12`)
 
